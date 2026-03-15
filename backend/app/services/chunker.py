@@ -7,7 +7,7 @@ def chunk_text(text):
     logger.debug("Chunking document")
 
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=800,
+        chunk_size=1200,
         chunk_overlap=200,
         separators=["\n\n", "\n", ".", " ", ""]
     )

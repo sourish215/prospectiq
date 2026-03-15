@@ -9,7 +9,7 @@ API_URL = "https://router.huggingface.co/hf-inference/models/BAAI/bge-small-en"
 
 BATCH_SIZE = 32
 
-MAX_WORKERS = 5
+MAX_WORKERS = 3
 
 
 def batch_embeddings(batch):

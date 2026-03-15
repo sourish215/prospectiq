@@ -9,7 +9,12 @@ from app.workers.celery_app import celery_app
 
 logger = get_logger(__name__)
 
-@celery_app.task
+@celery_app.task(
+    bind=True,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    time_limit=600
+)
 def process_document(doc_id, file_url):
 
     logger.info("Starting document processing: %s", doc_id)
