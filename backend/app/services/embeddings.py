@@ -1,11 +1,14 @@
 import requests
-from app.config import HF_API_KEY
+from app.config import HF_TOKEN
 
-API_URL = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
+API_URL = "https://router.huggingface.co/hf-inference/models/BAAI/bge-small-en"
 
 def create_embedding(text):
 
-    headers = {"Authorization": f"Bearer {HF_API_KEY}"}
+    headers = {
+        "Authorization": f"Bearer {HF_TOKEN}",
+        "Content-Type": "application/json"
+    }
 
     response = requests.post(
         API_URL,
@@ -13,11 +16,13 @@ def create_embedding(text):
         json={"inputs": text}
     )
 
-    embedding = response.json()
+    data = response.json()
 
-    # flatten embedding
-    if isinstance(embedding[0], list):
-        embedding = embedding[0]
+    print("Embedding response:", data)
+
+    if isinstance(data, dict) and "error" in data:
+        raise Exception(data["error"])
+    
+    embedding = data
 
     return embedding
-
