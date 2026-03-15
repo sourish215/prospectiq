@@ -29,8 +29,7 @@ async def upload_document(file: UploadFile, background_tasks: BackgroundTasks):
         "status": "processing"
     }).execute()
 
-    # Run processing in background
-    background_tasks.add_task(process_document, doc_id, file_url)
+    process_document.delay(doc_id, file_url)
 
     return {
         "document_id": doc_id,

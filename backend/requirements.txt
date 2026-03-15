@@ -8,3 +8,5 @@ pypdf
 langchain-text-splitters
 supabase
 python-dotenv
+celery
+redis
