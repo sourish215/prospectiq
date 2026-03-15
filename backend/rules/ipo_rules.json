@@ -1,0 +1,34 @@
+{
+ "rules":[
+  {
+   "id":"revenue_growth",
+   "description":"revenue growth",
+   "weight":20
+  },
+  {
+   "id":"profitability",
+   "description":"profit",
+   "weight":15
+  },
+  {
+   "id":"risk_disclosure",
+   "description":"risk factors",
+   "weight":20
+  },
+  {
+   "id":"use_of_funds",
+   "description":"use of proceeds",
+   "weight":20
+  },
+  {
+   "id":"industry_growth",
+   "description":"industry growth",
+   "weight":15
+  },
+  {
+   "id":"competitive_advantage",
+   "description":"competitive advantage",
+   "weight":10
+  }
+ ]
+}
