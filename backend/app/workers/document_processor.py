@@ -15,31 +15,45 @@ logger = get_logger(__name__)
     retry_backoff=True,
     time_limit=600
 )
-def process_document(doc_id, file_url):
+def process_document(self, doc_id, file_url):
 
-    logger.info("Starting document processing: %s", doc_id)
+    try:
 
-    text = extract_text(file_url)
+        logger.info("Starting document processing: %s", doc_id)
 
-    logger.debug("Extracted text length: %s", len(text))
+        text = extract_text(file_url)
 
-    chunks = chunk_text(text)
+        logger.debug("Extracted text length: %s", len(text))
 
-    logger.debug("Chunks created: %s", len(chunks))
+        chunks = chunk_text(text)
 
-    embeddings = parallel_embeddings(chunks)
+        logger.debug("Chunks created: %s", len(chunks))
 
-    logger.debug("Embeddings generated: %s", len(embeddings))
+        del text
 
-    store_chunks(doc_id, chunks, embeddings)
+        embeddings = parallel_embeddings(chunks)
 
-    logger.info("Vectors stored")
+        logger.debug("Embeddings generated: %s", len(embeddings))
 
-    analysis = analyze_document(text)
+        store_chunks(doc_id, chunks, embeddings)
 
-    supabase.table("documents").update({
-        "status": "ready",
-        "ipo_score": analysis["score"]
-    }).eq("id", doc_id).execute()
+        logger.info("Vectors stored")
 
-    logger.info("Processing complete")
+        analysis = analyze_document("\n".join(chunks[:50]))
+
+        supabase.table("documents").update({
+            "status": "ready",
+            "ipo_score": analysis["score"]
+        }).eq("id", doc_id).execute()
+
+        logger.info("Processing complete")
+
+    except Exception as e:
+
+        logger.error("Processing failed: %s", str(e))
+
+        supabase.table("documents").update({
+            "status": "failed"
+        }).eq("id", doc_id).execute()
+
+        raise e

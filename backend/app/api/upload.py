@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, BackgroundTasks
+from fastapi import APIRouter, UploadFile
 import uuid
 
 from app.services.storage import upload_file
@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 
 
 @router.post("/upload")
-async def upload_document(file: UploadFile, background_tasks: BackgroundTasks):
+async def upload_document(file: UploadFile):
 
     logger.info("Upload request received")
 
