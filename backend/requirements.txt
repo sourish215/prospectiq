@@ -3,7 +3,6 @@ uvicorn
 python-multipart
 requests
 boto3
-chromadb
 pypdf
 langchain-text-splitters
 supabase
